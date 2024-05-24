@@ -19,10 +19,10 @@ namespace SoldierTransfer
         {
             const string ShowAllCommand = "1";
             const string TransferCommand = "2";
-            const string Exit = "0";
+            const string ExitCommand = "0";
 
             string userInput;
-            int squadCount = 2;
+            
             bool isExit = false;
 
             Database database = new Database();
@@ -32,8 +32,8 @@ namespace SoldierTransfer
             {
                 WriteLine();
                 WriteLine(ShowAllCommand + " - Показать всех");
-                WriteLine(TransferCommand + " - Перевести в другое отделение всех на букву Б");
-                WriteLine(Exit + " - Выход\n");
+                WriteLine(TransferCommand + $" - Перевести в другое отделение всех на букву {database.nameStartsWith}");
+                WriteLine(ExitCommand + " - Выход\n");
 
                 userInput = ReadLine();
 
@@ -47,7 +47,7 @@ namespace SoldierTransfer
                         database.TransferSoldiers();
                         break;
 
-                    case Exit:
+                    case ExitCommand:
                         isExit = true;
                         break;
                 }
@@ -70,21 +70,21 @@ namespace SoldierTransfer
         private int _ammountOfRecords = 10;
         private List<Soldier> _soldiersSquad1 = new List<Soldier>();
         private List<Soldier> _soldiersSquad2 = new List<Soldier>();
+        
+        public char nameStartsWith { get; private set; } = 'Б';
 
         public void ShowAllSoldiers()
         {
-            WriteLine("\nПервый отряд\n");
+            List<Soldier>[] soldierSquads = { _soldiersSquad1, _soldiersSquad2 };
 
-            foreach (var soldier in _soldiersSquad1)
+            for (int i = 0; i < soldierSquads.Length; i++)
             {
-                WriteLine($"{soldier.Name}");
-            }
+                WriteLine($"\nОтряд {i + 1}\n");
 
-            WriteLine("\nВторой отряд\n");
-
-            foreach (var soldier in _soldiersSquad2)
-            {
-                WriteLine($"{soldier.Name}");
+                foreach (var soldier in soldierSquads[i])
+                {
+                    WriteLine($"{soldier.Name}");
+                }
             }
         }
 
@@ -99,7 +99,7 @@ namespace SoldierTransfer
 
         public void TransferSoldiers()
         {
-            List<Soldier> tempList = _soldiersSquad1.Where(soldier => soldier.Name.ToUpper().StartsWith("Б")).ToList();
+            List<Soldier> tempList = _soldiersSquad1.Where(soldier => soldier.Name.ToUpper().StartsWith(nameStartsWith)).ToList();
             _soldiersSquad1 = _soldiersSquad1.Except(tempList).ToList();
             _soldiersSquad2.AddRange(tempList);
 
