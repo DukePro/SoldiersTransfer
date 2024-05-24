@@ -101,8 +101,8 @@ namespace SoldierTransfer
         {
             List<Soldier> tempList = _soldiersSquad1.Where(soldier => soldier.Name.ToUpper().StartsWith(nameStartsWith)).ToList();
             _soldiersSquad1 = _soldiersSquad1.Except(tempList).ToList();
-            _soldiersSquad2.AddRange(tempList);
-
+            _soldiersSquad2.Union(tempList).ToList();
+            
             WriteLine("\nСолдаты на букву Б переведены из первого отряда во второй\n");
         }
 
