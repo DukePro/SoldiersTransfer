@@ -32,7 +32,7 @@ namespace SoldierTransfer
             {
                 WriteLine();
                 WriteLine(ShowAllCommand + " - Показать всех");
-                WriteLine(TransferCommand + $" - Перевести в другое отделение всех на букву {database.nameStartsWith}");
+                WriteLine(TransferCommand + $" - Перевести в другое отделение всех на букву {database.NameStartsWith}");
                 WriteLine(ExitCommand + " - Выход\n");
 
                 userInput = ReadLine();
@@ -71,7 +71,7 @@ namespace SoldierTransfer
         private List<Soldier> _soldiersSquad1 = new List<Soldier>();
         private List<Soldier> _soldiersSquad2 = new List<Soldier>();
         
-        public char nameStartsWith { get; private set; } = 'Б';
+        public char NameStartsWith { get; private set; } = 'Б';
 
         public void ShowAllSoldiers()
         {
@@ -99,9 +99,9 @@ namespace SoldierTransfer
 
         public void TransferSoldiers()
         {
-            List<Soldier> tempList = _soldiersSquad1.Where(soldier => soldier.Name.ToUpper().StartsWith(nameStartsWith)).ToList();
+            List<Soldier> tempList = _soldiersSquad1.Where(soldier => soldier.Name.ToUpper().StartsWith(NameStartsWith)).ToList();
             _soldiersSquad1 = _soldiersSquad1.Except(tempList).ToList();
-            _soldiersSquad2.Union(tempList).ToList();
+            _soldiersSquad2 = _soldiersSquad2.Union(tempList).ToList();
             
             WriteLine("\nСолдаты на букву Б переведены из первого отряда во второй\n");
         }
